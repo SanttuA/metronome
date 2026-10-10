@@ -1,3 +1,4 @@
+import { MAX_BPM } from '../lib/tempo';
 import { Scheduler, type ScheduledBeat, type SchedulerOptions } from './scheduler';
 
 /** A clock driven by the fake timers, so audio time and timer time move together. */
@@ -41,6 +42,17 @@ describe('Scheduler', () => {
 
     const times = beats.map((beat) => beat.time);
     expect(times.slice(0, 5)).toEqual([0, 0.5, 1, 1.5, 2]);
+  });
+
+  it('keeps every beat evenly spaced at the maximum tempo', () => {
+    const { scheduler, beats } = setup({ bpm: MAX_BPM });
+    scheduler.start();
+    vi.advanceTimersByTime(3000);
+    scheduler.stop();
+
+    const gaps = beats.slice(1).map((beat, i) => beat.time - (beats[i]?.time ?? 0));
+    expect(gaps.length).toBeGreaterThanOrEqual(24);
+    for (const gap of gaps) expect(gap).toBeCloseTo(60 / MAX_BPM, 9);
   });
 
   it('only schedules a short way ahead of the clock', () => {
