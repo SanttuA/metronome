@@ -126,12 +126,18 @@ test.describe('theme', () => {
     await expect(page.getByRole('button', { name: 'Switch to dark theme' })).toBeVisible();
   });
 
-  test('applies the saved theme before the app renders', async ({ page }) => {
-    await page.evaluate(() => localStorage.setItem('metronome.theme', '"light"'));
-    // Block the app bundle so only the inline script in index.html can set the theme.
-    await page.route('**/assets/*.js', (route) => route.abort());
-    await page.reload();
+  test.describe(() => {
+    // Otherwise the service worker could serve the bundle from its cache, bypassing the route.
+    test.use({ serviceWorkers: 'block' });
 
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    test('applies the saved theme before the app renders', async ({ page }) => {
+      await page.evaluate(() => localStorage.setItem('metronome.theme', '"light"'));
+      // Block the app bundle so only the inline script in index.html can set the theme.
+      await page.route('**/assets/*.js', (route) => route.abort());
+      await page.reload();
+
+      await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+      await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#f3f2f8');
+    });
   });
 });
