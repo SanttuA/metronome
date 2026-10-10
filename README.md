@@ -2,7 +2,7 @@
 
 A simple, precise metronome for the browser, built with React and the Web Audio API.
 
-- Tempo from 20 to 300 BPM: type it, drag the slider or use the − / + buttons
+- Tempo from 20 to 500 BPM: type it, drag the slider or use the − / + buttons
 - Time signatures 2/4, 3/4, 4/4, 5/4, 6/8 and 7/8 with an optional accented first beat
 - Visual beat indicator synced to the audio clock
 - Keyboard shortcuts: <kbd>Space</kbd> start/stop, <kbd>↑</kbd>/<kbd>↓</kbd> ±1 BPM, <kbd>Shift</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> ±10 BPM

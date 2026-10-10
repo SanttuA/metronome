@@ -28,6 +28,7 @@ describe('tempoMarking', () => {
     [160, 'Vivace'],
     [180, 'Presto'],
     [240, 'Prestissimo'],
+    [500, 'Prestissimo'],
   ])('names %s BPM %s', (bpm, name) => {
     expect(tempoMarking(bpm)).toBe(name);
   });

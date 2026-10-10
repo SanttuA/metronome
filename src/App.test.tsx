@@ -51,7 +51,7 @@ describe('App', () => {
 
     await user.clear(bpmInput());
     await user.type(bpmInput(), '999{Enter}');
-    expect(bpmInput()).toHaveValue('300');
+    expect(bpmInput()).toHaveValue('500');
   });
 
   it('discards an empty typed tempo', async () => {
@@ -92,7 +92,7 @@ describe('App', () => {
   });
 
   it('disables the buttons at the tempo limits', () => {
-    localStorage.setItem('metronome.bpm', '300');
+    localStorage.setItem('metronome.bpm', '500');
     render(<App />);
 
     expect(screen.getByRole('button', { name: 'Increase tempo' })).toBeDisabled();

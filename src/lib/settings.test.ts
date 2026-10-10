@@ -3,7 +3,7 @@ import { parseBoolean, parseBpm, parseTheme, parseTimeSignature, parseVolume } f
 describe('settings parsers', () => {
   it('parses and clamps the tempo', () => {
     expect(parseBpm(90)).toBe(90);
-    expect(parseBpm(5000)).toBe(300);
+    expect(parseBpm(5000)).toBe(500);
     expect(parseBpm('90')).toBeUndefined();
   });
 

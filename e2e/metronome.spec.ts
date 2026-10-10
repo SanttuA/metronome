@@ -61,6 +61,28 @@ test('changes the tempo with buttons, slider and typing', async ({ page }) => {
   await expect(page.getByTestId('tempo-marking')).toHaveText('Adagio');
 });
 
+test('plays at the maximum tempo of 500 BPM', async ({ page }) => {
+  await bpmInput(page).fill('999');
+  await bpmInput(page).press('Enter');
+  await expect(bpmInput(page)).toHaveValue('500');
+  await expect(page.getByRole('button', { name: 'Increase tempo' })).toBeDisabled();
+
+  await page.getByRole('button', { name: 'Start' }).click();
+  // At 500 BPM a 4/4 bar lasts under half a second, so every beat lights up quickly.
+  const seen = new Set<number>();
+  await expect
+    .poll(
+      async () => {
+        const index = await activeBeatIndex(page);
+        if (index >= 0) seen.add(index);
+        return seen.size;
+      },
+      { timeout: 3_000, intervals: [20] },
+    )
+    .toBe(4);
+  await page.getByRole('button', { name: 'Stop' }).click();
+});
+
 test.describe('keyboard shortcuts', () => {
   test('Space starts and stops', async ({ page }) => {
     await page.keyboard.press('Space');
