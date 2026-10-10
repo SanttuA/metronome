@@ -209,5 +209,18 @@ describe('App', () => {
       render(<App />);
       expect(document.documentElement.dataset['theme']).toBe('light');
     });
+
+    it('keeps the browser theme colour in sync', async () => {
+      const meta = document.createElement('meta');
+      meta.name = 'theme-color';
+      document.head.append(meta);
+      const user = userEvent.setup();
+      render(<App />);
+
+      expect(meta.content).toBe('#0e0d14');
+      await user.click(screen.getByRole('button', { name: 'Switch to light theme' }));
+      expect(meta.content).toBe('#f3f2f8');
+      meta.remove();
+    });
   });
 });

@@ -6,6 +6,7 @@ import { PlayButton } from './components/PlayButton';
 import { SettingsPanel } from './components/SettingsPanel';
 import { TempoControls } from './components/TempoControls';
 import { ThemeToggle } from './components/ThemeToggle';
+import { UpdatePrompt } from './components/UpdatePrompt';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { useMetronome } from './hooks/useMetronome';
 import { usePersistentState } from './hooks/usePersistentState';
@@ -78,6 +79,7 @@ export function App() {
           <kbd>Shift</kbd> + <kbd>↑</kbd> <kbd>↓</kbd> ±10 BPM
         </span>
       </footer>
+      <UpdatePrompt />
     </main>
   );
 }
