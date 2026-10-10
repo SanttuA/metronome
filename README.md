@@ -1,0 +1,59 @@
+# Metronome
+
+A simple, precise metronome for the browser, built with React and the Web Audio API.
+
+- Tempo from 20 to 300 BPM: type it, drag the slider or use the − / + buttons
+- Time signatures 2/4, 3/4, 4/4, 5/4, 6/8 and 7/8 with an optional accented first beat
+- Visual beat indicator synced to the audio clock
+- Keyboard shortcuts: <kbd>Space</kbd> start/stop, <kbd>↑</kbd>/<kbd>↓</kbd> ±1 BPM, <kbd>Shift</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> ±10 BPM
+- Dark (default) and light themes
+- Settings are remembered in `localStorage`
+
+Clicks are synthesized with oscillators and scheduled slightly ahead of time on the
+`AudioContext` clock (see [`src/audio/scheduler.ts`](src/audio/scheduler.ts)), so timing stays
+steady regardless of what the UI thread is doing.
+
+## Development
+
+Requires Node 24+ and [pnpm](https://pnpm.io) (`corepack enable pnpm`).
+
+```sh
+pnpm install
+pnpm dev            # start the dev server at http://localhost:5173/metronome/
+```
+
+| Script           | What it does                                                                              |
+| ---------------- | ----------------------------------------------------------------------------------------- |
+| `pnpm build`     | Typecheck and build the production site into `dist/`                                      |
+| `pnpm preview`   | Serve the production build locally                                                        |
+| `pnpm lint`      | Lint with [oxlint](https://oxc.rs/docs/guide/usage/linter)                                |
+| `pnpm format`    | Format with [oxfmt](https://oxc.rs/docs/guide/usage/formatter) (`format:check` to verify) |
+| `pnpm typecheck` | Run the TypeScript compiler                                                               |
+| `pnpm test`      | Unit tests with Vitest (`test:watch`, `test:coverage`)                                    |
+| `pnpm test:e2e`  | End-to-end tests with Playwright against the production build                             |
+| `pnpm check`     | Everything CI runs except the end-to-end tests                                            |
+
+Before the first end-to-end run, install the browser with
+`pnpm exec playwright install --with-deps chromium`.
+
+## CI and deployment
+
+- [`ci.yml`](.github/workflows/ci.yml) runs formatting, lint, typecheck, unit tests, build and
+  end-to-end tests on every pull request to `main` (and on pushes to `main`).
+- [`deploy.yml`](.github/workflows/deploy.yml) builds the site and publishes it to GitHub Pages
+  on every push to `main`.
+
+### One-time GitHub setup
+
+1. Create a GitHub repository named `metronome` and push the `main` branch. If you use a
+   different name, update `base` in [`vite.config.ts`](vite.config.ts) and the URLs in
+   [`playwright.config.ts`](playwright.config.ts).
+2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
+3. Optional: in **Settings → Branches**, protect `main` and require the CI checks to pass
+   before merging.
+
+The site will be served at `https://<your-username>.github.io/metronome/`.
+
+## License
+
+[MIT](LICENSE) © SanttuA

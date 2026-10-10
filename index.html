@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A simple, precise metronome with adjustable tempo and time signature."
+    />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+    <title>Metronome</title>
+    <script>
+      // Apply the saved theme before first paint to avoid a flash. Keep the key
+      // in sync with THEME_STORAGE_KEY in src/hooks/useTheme.ts.
+      try {
+        if (JSON.parse(localStorage.getItem('metronome.theme')) === 'light') {
+          document.documentElement.dataset.theme = 'light';
+        }
+      } catch {
+        // Ignore: stay on the default dark theme.
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
